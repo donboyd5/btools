@@ -107,23 +107,6 @@ cton <- function(cvar) {as.numeric(gsub("[ ,$%]", "", cvar))}
 naz <- function(vec) {return(ifelse(is.na(vec), 0, vec))}
 
 
-#' @title Zero-pad leading characters in a numeric value.
-#'
-#' @description \code{zpad} converts NA to zero
-#' @usage zpad(nvec, outlen=2)
-#' @param nvec The numeric vector to zero-pad.
-#' @param outlen The length of the string to be returned. Default is 2.
-#' @details Zero-pads on the left all numeric in a vector, returning strings of length outlen.
-#' @return Zero-padded strings of length outlen.
-#' @keywords zpad
-#' @export
-#' @examples
-#' zpad(1, 4)
-zpad <- function(nvec, outlen=2){
-  padcode <- paste0("%0", outlen, "i")
-  return(sprintf(padcode, round(nvec)))
-}
-
 
 #****************************************************************************************************
 #                Miscellaneous functions ####
