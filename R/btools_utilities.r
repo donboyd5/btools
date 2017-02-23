@@ -212,6 +212,24 @@ safe.ifelse <- function(cond, yes, no) {
 is.true <- function(x) {!is.na(x) & x}
 
 
+#' Factor to numeric
+#'
+#' \code{f2n} returns a numeric vector, converted from factor
+#'
+#' @usage f2n(fctr)
+#' @param fctr factor that we want to convert to numeric
+#' @details
+#' Returns a pure numeric vector
+#' @return numeric vector
+#' @keywords f2n
+#' @export
+#' @examples
+#' set.seed(1234)
+#' fctr <- factor(sample(1:4, 50, replace=TRUE), levels=1:4)
+#' fctr
+#' f2n(fctr)
+f2n <- function(fctr) {as.numeric(levels(fctr)[fctr])}
+
 
 #****************************************************************************************************
 #                Rolling mean and sum functions ####

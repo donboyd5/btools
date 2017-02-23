@@ -3,6 +3,7 @@
 export(capwords)
 export(cton)
 export(dollar_d)
+export(f2n)
 export(fdoq)
 export(ht)
 export(is.true)
