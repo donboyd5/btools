@@ -2,7 +2,7 @@
 # Don Boyd
 # 2/21/2017
 
-library("devtools")
+# library("devtools")
 
 # library("btools")
 
@@ -135,7 +135,7 @@ xdate <- function(xdate) {
 #' @export
 #' @examples
 #' p25(1:100)
-#' p25(c(1:10, NA, 11:100))
+#' p25(c(1:10, NA, 11:100), na.rm=TRUE)
 p25 <- function(x, na.rm=FALSE) {as.numeric(quantile(x, .25, na.rm=na.rm))}
 
 

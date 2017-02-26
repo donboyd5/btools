@@ -19,5 +19,5 @@ Compute the sample 25th percentile.
 }
 \examples{
 p25(1:100)
-p25(c(1:10, NA, 11:100))
+p25(c(1:10, NA, 11:100), na.rm=TRUE)
 }

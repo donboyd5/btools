@@ -1,6 +1,6 @@
 # btools_dplyrtools.r
 # Don Boyd
-# 4/29/2015
+# 2/26/2017
 
 # tools that generally are helpful with dplyr
 
@@ -41,7 +41,7 @@ qtiledf <- function(vec, probs=c(0, .1, .25, .5, .75, .9, 1)) {
 #' library(dplyr)
 #' spop.q %>% group_by(stabbr) %>%
 #'     arrange(date) %>% # BE SURE DATA HAVE BEEN SORTED BY DATE WITHIN GROUPING VARS!!!
-#'     do(cbind(., stldf(.$value, 4)))
+#'     do(stldf(.$value, 4))
 stldf <- function(vec, freq){ # decompose time series; assume "date" var exists; has minor error handling
   # arguments: numeric vector (vec) and its frequency (freq)
   # return: data frame (tsr) with trend, seasonal, and remainder columns
