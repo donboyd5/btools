@@ -2,7 +2,9 @@
 # Don Boyd
 # 2/21/2017
 
+library("devtools")
 
+# library("btools")
 
 
 #****************************************************************************************************
@@ -74,7 +76,7 @@ trim.ws <- function(s) {gsub("^\\s+|\\s+$", "", s)}
 
 
 #****************************************************************************************************
-#                Numeric manipulation functions ####
+#                Numeric and date manipulation functions ####
 #****************************************************************************************************
 
 #' @title Convert character to numeric
@@ -105,6 +107,111 @@ cton <- function(cvar) {as.numeric(gsub("[ ,$%]", "", cvar))}
 #' @examples
 #' naz(NA)
 naz <- function(vec) {return(ifelse(is.na(vec), 0, vec))}
+
+
+#' Convert Excel numeric date to date.
+#' 
+#' @param xdate a numeric vector containing dates in Excel format.
+#' @return date
+#' @export
+#' @examples
+#' xdate(30000)
+xdate <- function(xdate) {
+  # convert Excel numeric date to date
+  date <- as.Date(as.numeric(xdate), origin = "1899-12-30")
+  return(date)
+}
+
+
+#****************************************************************************************************
+#                Statistical functions ####
+#****************************************************************************************************
+
+#' Compute the sample 25th percentile.
+#' 
+#' @param x a numeric vector containing the values whose 25th percentile is to be computed.
+#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
+#' @return numeric
+#' @export
+#' @examples
+#' p25(1:100)
+#' p25(c(1:10, NA, 11:100))
+p25 <- function(x, na.rm=FALSE) {as.numeric(quantile(x, .25, na.rm=na.rm))}
+
+
+#' Compute the sample 50th percentile (median).
+#' 
+#' @param x a numeric vector containing the values whose 50th percentile is to be computed.
+#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
+#' @return numeric
+#' @export
+#' @examples
+#' p50(1:100)
+#' p50(c(1:10, NA, 11:100), na.rm=TRUE)
+p50 <- function(x, na.rm=FALSE) {as.numeric(quantile(x, .50, na.rm=na.rm))}
+
+#' Compute the sample 75th percentile.
+#' 
+#' @param x a numeric vector containing the values whose 75th percentile is to be computed.
+#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
+#' @return numeric
+#' @export
+#' @examples
+#' p75(1:100)
+#' p75(c(1:10, NA, 11:100), na.rm=TRUE)
+p75 <- function(x, na.rm=FALSE) {as.numeric(quantile(x, .75, na.rm=na.rm))}
+
+#' Compute the sample value for a specific percentile, p.
+#' 
+#' @param x a numeric vector containing the values whose p-th percentile is to be computed.
+#' @param p the percentile.
+#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
+#' @return numeric
+#' @export
+#' @examples
+#' pany(1:100, .33)
+#' pany(c(1:10, NA, 11:100), .33, na.rm=TRUE)
+pany <- function(x, p, na.rm=FALSE) {as.numeric(quantile(x, p, na.rm=na.rm))}
+
+
+#****************************************************************************************************
+#                Rolling mean and sum functions ####
+#****************************************************************************************************
+# the rollmean versions are fast but cannot handle NA input values
+# the rollapply version is slower but handles NAs, so use it - that's what I do
+
+#' @title Get 4-period moving average (3 lags + current)
+#'
+#' @description \code{ma4} get 4-period moving average
+#' @usage ma4(x)
+#' @param x The vector to operate on.
+#' @details 4-period moving average
+#' @keywords ma4
+#' @export
+#' @examples
+#' ma4(7:21)
+ma4 <- function(x) {
+  # note that this requires zoo, which is on the Depends line in the Description file
+  zoo::rollapply(x, 4, function(x) mean(x, na.rm=TRUE), fill=NA, align="right")
+}
+
+#' @title Get 4-period moving sum (3 lags + current)
+#'
+#' @description \code{sum4} get 4-period moving sum
+#' @usage sum4(x)
+#' @param x The vector to operate on.
+#' @details 4-period moving sum
+#' @keywords sum4
+#' @export
+#' @examples
+#' sum4(7:21)
+sum4 <- function(x) {ma4(x) * 4}
+
+ma <- function (x, n) {
+  x.ma <- zoo::rollapply(x, n, function(x) mean(x, na.rm = TRUE), fill = NA, align = "right")
+  return(x.ma)
+}
+
 
 
 
@@ -143,7 +250,7 @@ memory <- function(maxnobjs=5){
   # function for getting the sizes of objects in memory
   objs <- ls(envir = globalenv())
   nobjs <- min(length(objs), maxnobjs)
-
+  
   getobjs <- function() {
     f <- function(x) utils::object.size(get(x)) / 1048600
     sizeMB <- sapply(objs, f)
@@ -229,39 +336,5 @@ is.true <- function(x) {!is.na(x) & x}
 #' fctr
 #' f2n(fctr)
 f2n <- function(fctr) {as.numeric(levels(fctr)[fctr])}
-
-
-#****************************************************************************************************
-#                Rolling mean and sum functions ####
-#****************************************************************************************************
-# the rollmean versions are fast but cannot handle NA input values
-# the rollapply version is slower but handles NAs, so use it - that's what I do
-
-#' @title Get 4-period moving average (3 lags + current)
-#'
-#' @description \code{ma4} get 4-period moving average
-#' @usage ma4(x)
-#' @param x The vector to operate on.
-#' @details 4-period moving average
-#' @keywords ma4
-#' @export
-#' @examples
-#' ma4(7:21)
-ma4 <- function(x) {
-  # note that this requires zoo, which is on the Depends line in the Description file
-  zoo::rollapply(x, 4, function(x) mean(x, na.rm=TRUE), fill=NA, align="right")
-}
-
-#' @title Get 4-period moving sum (3 lags + current)
-#'
-#' @description \code{sum4} get 4-period moving sum
-#' @usage sum4(x)
-#' @param x The vector to operate on.
-#' @details 4-period moving sum
-#' @keywords sum4
-#' @export
-#' @examples
-#' sum4(7:21)
-sum4 <- function(x) ma4(x) * 4
 
 
