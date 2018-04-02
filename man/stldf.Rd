@@ -26,6 +26,6 @@ library(bdata) # so that spop.q is available
 library(dplyr)
 spop.q \%>\% group_by(stabbr) \%>\%
     arrange(date) \%>\% # BE SURE DATA HAVE BEEN SORTED BY DATE WITHIN GROUPING VARS!!!
-    do(stldf(.$value, 4))
+    do(cbind(., stldf(.$value, 4)))
 }
 \keyword{stldf}

@@ -41,14 +41,23 @@ qtiledf <- function(vec, probs=c(0, .1, .25, .5, .75, .9, 1)) {
 #' library(dplyr)
 #' spop.q %>% group_by(stabbr) %>%
 #'     arrange(date) %>% # BE SURE DATA HAVE BEEN SORTED BY DATE WITHIN GROUPING VARS!!!
-#'     do(stldf(.$value, 4))
+#'     do(cbind(., stldf(.$value, 4)))
 stldf <- function(vec, freq){ # decompose time series; assume "date" var exists; has minor error handling
   # arguments: numeric vector (vec) and its frequency (freq)
   # return: data frame (tsr) with trend, seasonal, and remainder columns
+  
+  # a typical call would be:
+  # do(stldf(.$value, 12) but this will only return trend, seasonal, remainder
+  
+  # if other variables on the data frame are desired, incorporate them into the call via cbind, such as:
+  # do(cbind(., stldf(.$value, 12))), or
+  # do(cbind(.[, group_vars(.)], stldf(.$value, 12))) 
+  
   lvec <- length(vec)
   badout <- function(lvec) data.frame(trend=rep(NA, lvec), seasonal=rep(NA, lvec), remainder=rep(NA, lvec))
   
   if(lvec < 2 * freq) return(badout(lvec))
+  if (sum(is.na(vec)>0)) return(badout(lvec)) # djb new fix!!! 4/2/2018
   
   varts <- stats::ts(vec, start=1, frequency=freq)
   decomp <- stats::stl(varts, s.window = freq + 1, na.action=zoo::na.approx) # na.approx replaces missing values with interpolated values  
