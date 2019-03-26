@@ -136,7 +136,7 @@ xdate <- function(xdate) {
 #' @examples
 #' p25(1:100)
 #' p25(c(1:10, NA, 11:100), na.rm=TRUE)
-p25 <- function(x, na.rm=FALSE) {as.numeric(quantile(x, .25, na.rm=na.rm))}
+p25 <- function(x, na.rm=FALSE) {as.numeric(stats::quantile(x, .25, na.rm=na.rm))}
 
 
 #' Compute the sample 50th percentile (median).
@@ -148,7 +148,7 @@ p25 <- function(x, na.rm=FALSE) {as.numeric(quantile(x, .25, na.rm=na.rm))}
 #' @examples
 #' p50(1:100)
 #' p50(c(1:10, NA, 11:100), na.rm=TRUE)
-p50 <- function(x, na.rm=FALSE) {as.numeric(quantile(x, .50, na.rm=na.rm))}
+p50 <- function(x, na.rm=FALSE) {as.numeric(stats::quantile(x, .50, na.rm=na.rm))}
 
 #' Compute the sample 75th percentile.
 #' 
@@ -159,7 +159,7 @@ p50 <- function(x, na.rm=FALSE) {as.numeric(quantile(x, .50, na.rm=na.rm))}
 #' @examples
 #' p75(1:100)
 #' p75(c(1:10, NA, 11:100), na.rm=TRUE)
-p75 <- function(x, na.rm=FALSE) {as.numeric(quantile(x, .75, na.rm=na.rm))}
+p75 <- function(x, na.rm=FALSE) {as.numeric(stats::quantile(x, .75, na.rm=na.rm))}
 
 #' Compute the sample value for a specific percentile, p.
 #' 
@@ -171,7 +171,7 @@ p75 <- function(x, na.rm=FALSE) {as.numeric(quantile(x, .75, na.rm=na.rm))}
 #' @examples
 #' pany(1:100, .33)
 #' pany(c(1:10, NA, 11:100), .33, na.rm=TRUE)
-pany <- function(x, p, na.rm=FALSE) {as.numeric(quantile(x, p, na.rm=na.rm))}
+pany <- function(x, p, na.rm=FALSE) {as.numeric(stats::quantile(x, p, na.rm=na.rm))}
 
 
 #****************************************************************************************************
@@ -231,8 +231,8 @@ ma <- function (x, n) {
 #' @examples
 #' ht(mtcars, 4)
 ht <- function(df, nrecs=6){
-  print(head(df, nrecs))
-  print(tail(df, nrecs))
+  print(utils::head(df, nrecs))
+  print(utils::tail(df, nrecs))
 }
 
 
@@ -255,7 +255,8 @@ memory <- function(maxnobjs=5){
     f <- function(x) utils::object.size(get(x)) / 1048600
     sizeMB <- sapply(objs, f)
     tmp <- data.frame(sizeMB)
-    tmp <- cbind(name=row.names(tmp), tmp) %>% arrange(desc(sizeMB))
+    tmp <- cbind(name=row.names(tmp), tmp) %>% 
+      dplyr::arrange(dplyr::desc(sizeMB))
     # tmp <- tmp[order(-tmp$sizeMB), ]
     row.names(tmp) <- NULL
     tmp$sizeMB <- formatC(tmp$sizeMB, format="f", digits=2, big.mark=",", preserve.width="common")
@@ -267,34 +268,10 @@ memory <- function(maxnobjs=5){
   
   if(nobjs>0){
     print("Memory for selected objects: ")
-    print(head(getobjs(), nobjs))
+    print(utils::head(getobjs(), nobjs))
   }
   print(gc())
   print(paste0("Memory in use after: ", utils::memory.size()))
-}
-
-
-#' Format a numeric vector in dollar (or comma) format
-#' 
-#' @param x Numeric vector.
-#' @param d Integer, number of decimal places.
-#' @param parens Logical - enclose negative numbers with parentheses?
-#' @param dsign Logical - leading dollar sign?
-#' @export
-#' @examples
-#' x <- c(-10, -1.235, -23456.789, 1, 10, 100, 1000000, 1789456.23456789)
-#' dollar_d(x)
-#' dollar_d(x, 1)
-#' dollar_d(x, 1, dsign=FALSE)
-#' dollar_d(x, 1, parens=TRUE)
-#' dollar_d(x, 1, parens=TRUE, dsign=FALSE)
-dollar_d <- function(x, d=0, parens=FALSE, dsign=TRUE){
-  # require("scales")
-  xc <- scales::comma(round(abs(x), d))
-  if(parens) xc <- ifelse(x >= 0, xc, paste0("(", xc, ")")) else
-    xc <- ifelse(x >= 0, xc, paste0("-", xc))
-  if(dsign) xc <- paste0("$", xc)
-  return(xc)
 }
 
 
@@ -321,20 +298,19 @@ is.true <- function(x) {!is.na(x) & x}
 
 #' Factor to numeric
 #'
-#' \code{f2n} returns a numeric vector, converted from factor
+#' \code{fton} returns a numeric vector, converted from factor
 #'
-#' @usage f2n(fctr)
+#' @usage fton(fctr)
 #' @param fctr factor that we want to convert to numeric
 #' @details
 #' Returns a pure numeric vector
 #' @return numeric vector
-#' @keywords f2n
+#' @keywords fton
 #' @export
 #' @examples
 #' set.seed(1234)
 #' fctr <- factor(sample(1:4, 50, replace=TRUE), levels=1:4)
 #' fctr
-#' f2n(fctr)
-f2n <- function(fctr) {as.numeric(levels(fctr)[fctr])}
-
+#' fton(fctr)
+fton <- function(fctr) {as.numeric(levels(fctr)[fctr])}
 

@@ -1,6 +1,6 @@
 # btools_dplyrtools.r
 # Don Boyd
-# 2/26/2017
+# 3/26/2019
 
 # tools that generally are helpful with dplyr
 
@@ -21,7 +21,7 @@
 #' df
 #' df %>% group_by(year) %>% do(qtiledf(.$x, c(.1, .25, .5, .75, .9)))
 qtiledf <- function(vec, probs=c(0, .1, .25, .5, .75, .9, 1)) {
-  cbind(n=length(vec), n.notNA=sum(!is.na(vec)), as.data.frame(t(quantile(vec, na.rm = TRUE, probs))))
+  cbind(n=length(vec), n.notNA=sum(!is.na(vec)), as.data.frame(t(stats::quantile(vec, na.rm = TRUE, probs))))
 }
 
 
@@ -39,8 +39,9 @@ qtiledf <- function(vec, probs=c(0, .1, .25, .5, .75, .9, 1)) {
 #' @examples
 #' library(bdata) # so that spop.q is available
 #' library(dplyr)
-#' spop.q %>% group_by(stabbr) %>%
-#'     arrange(date) %>% # BE SURE DATA HAVE BEEN SORTED BY DATE WITHIN GROUPING VARS!!!
+#' spop.q %>% 
+#'     group_by(stabbr) %>%
+#'     dplyr::arrange(date) %>% # BE SURE DATA HAVE BEEN SORTED BY DATE WITHIN GROUPING VARS!!!
 #'     do(cbind(., stldf(.$value, 4)))
 stldf <- function(vec, freq){ # decompose time series; assume "date" var exists; has minor error handling
   # arguments: numeric vector (vec) and its frequency (freq)
