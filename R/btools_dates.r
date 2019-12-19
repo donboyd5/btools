@@ -29,7 +29,9 @@ fdoq <- function(date) as.Date(lubridate::floor_date(date, "quarter"))
 #' @keywords mdyfn
 #' @export
 #' @examples mdyfn(10, 1, 1988)
-mdyfn <- function(m, d, y) {as.Date(ISOdate(y, m, d))}
+mdyfn <- function(m, d, y) {
+  as.Date(ISOdate(y, m, d))
+  }
 
 
 #' @title Create a date for start of quarter, from quarter, year
@@ -42,5 +44,6 @@ mdyfn <- function(m, d, y) {as.Date(ISOdate(y, m, d))}
 #' @keywords qy
 #' @export
 #' @examples qy(2, 1985)
-qy <- function(q, y) {mdyfn(q*3-2, 1, y)}
-
+qy <- function(q, y) {
+  mdyfn(q * 3-2, 1, y)
+  }

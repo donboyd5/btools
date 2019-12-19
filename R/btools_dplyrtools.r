@@ -21,7 +21,7 @@
 #' df
 #' df %>% group_by(year) %>% do(qtiledf(.$x, c(.1, .25, .5, .75, .9)))
 qtiledf <- function(vec, probs=c(0, .1, .25, .5, .75, .9, 1)) {
-  cbind(n=length(vec), n.notNA=sum(!is.na(vec)), as.data.frame(t(stats::quantile(vec, na.rm = TRUE, probs))))
+  cbind(n = length(vec), n.notNA = sum(!is.na(vec)), as.data.frame(t(stats::quantile(vec, na.rm = TRUE, probs))))
 }
 
 
@@ -43,7 +43,7 @@ qtiledf <- function(vec, probs=c(0, .1, .25, .5, .75, .9, 1)) {
 #'     group_by(stabbr) %>%
 #'     dplyr::arrange(date) %>% # BE SURE DATA HAVE BEEN SORTED BY DATE WITHIN GROUPING VARS!!!
 #'     do(cbind(., stldf(.$value, 4)))
-stldf <- function(vec, freq){ # decompose time series; assume "date" var exists; has minor error handling
+stldf <- function(vec, freq) { # decompose time series; assume "date" var exists; has minor error handling
   # arguments: numeric vector (vec) and its frequency (freq)
   # return: data frame (tsr) with trend, seasonal, and remainder columns
   
@@ -55,17 +55,17 @@ stldf <- function(vec, freq){ # decompose time series; assume "date" var exists;
   # do(cbind(.[, group_vars(.)], stldf(.$value, 12))) 
   
   lvec <- length(vec)
-  badout <- function(lvec) data.frame(trend=rep(NA, lvec), seasonal=rep(NA, lvec), remainder=rep(NA, lvec))
+  badout <- function(lvec) data.frame(trend = rep(NA, lvec), seasonal = rep(NA, lvec), remainder = rep(NA, lvec))
   
   if(lvec < 2 * freq) return(badout(lvec))
   if (sum(is.na(vec)>0)) return(badout(lvec)) # djb new fix!!! 4/2/2018
   
-  varts <- stats::ts(vec, start=1, frequency=freq)
-  decomp <- stats::stl(varts, s.window = freq + 1, na.action=zoo::na.approx) # na.approx replaces missing values with interpolated values  
+  varts <- stats::ts(vec, start = 1, frequency = freq)
+  decomp <- stats::stl(varts, s.window = freq + 1, na.action = zoo::na.approx) # na.approx replaces missing values with interpolated values  
   tsr <- data.frame(trend = as.vector(decomp$time.series[, "trend"]), 
                     seasonal = as.vector(decomp$time.series[, "seasonal"]), 
                     remainder = as.vector(decomp$time.series[, "remainder"]))
-  if(nrow(tsr) != lvec) return(badout(lvec))
-  
+  if (nrow(tsr) != lvec) return(badout(lvec))
+
   return(tsr)
 }

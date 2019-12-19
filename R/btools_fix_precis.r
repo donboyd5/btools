@@ -17,6 +17,3 @@ precis2 <- function(x, ..., width = 60) {
   # class(out) <- c("precis", "tbl_df", "tbl", "data.frame") # this is deprecated, I think, and eliminates the output!!
   out
 }
-
-
-

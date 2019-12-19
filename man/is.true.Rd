@@ -9,6 +9,9 @@ is.true(x)
 \arguments{
 \item{x}{vector.}
 }
+\value{
+logical vector
+}
 \description{
 function to deal with NA logical values
 }

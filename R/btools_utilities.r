@@ -1,6 +1,6 @@
 # btools_utilities.r
 # Don Boyd
-# 2/21/2017
+# 12/19/2019
 
 # library("devtools")
 
@@ -10,6 +10,8 @@
 #****************************************************************************************************
 #                String manipulation functions ####
 #****************************************************************************************************
+
+# NOTE: These probably aren't needed anymore, as I use stringr for almost everything.
 
 #' @title Capitalize first letter of each word
 #'
@@ -218,6 +220,25 @@ ma <- function (x, n) {
 #****************************************************************************************************
 #                Miscellaneous functions ####
 #****************************************************************************************************
+#' Factor to numeric
+#'
+#' \code{fton} returns a numeric vector, converted from factor
+#'
+#' @usage fton(fctr)
+#' @param fctr factor that we want to convert to numeric
+#' @details
+#' Returns a pure numeric vector
+#' @return numeric vector
+#' @keywords fton
+#' @export
+#' @examples
+#' set.seed(1234)
+#' fctr <- factor(sample(1:4, 50, replace=TRUE), levels=1:4)
+#' fctr
+#' fton(fctr)
+fton <- function(fctr) {
+  as.numeric(levels(fctr)[fctr])
+}
 
 #' @title Show head and tail of a vector, matrix, table, data frame or function
 #'
@@ -235,6 +256,14 @@ ht <- function(df, nrecs=6){
   print(utils::tail(df, nrecs))
 }
 
+#' function to deal with NA logical values
+#' 
+#' @param x vector.
+#' @return logical vector
+#' @export
+is.true <- function(x) {
+  !is.na(x) & x
+}
 
 #' @title Describe memory usage and collect garbage
 #'
@@ -274,6 +303,17 @@ memory <- function(maxnobjs=5){
   print(paste0("Memory in use after: ", utils::memory.size()))
 }
 
+#' create vector of sorted names of a data frame
+#' 
+#' @param df Data frame
+#' @return a vector of sorted names
+#' @export
+#' @examples
+#' names(iris) # unsorted
+#' ns(iris)
+ns <- function(df) {
+  names(df) %>% sort
+}
 
 #' ifelse that can be used safely with dates
 #' 
@@ -288,29 +328,23 @@ safe.ifelse <- function(cond, yes, no) {
   structure(ifelse(cond, yes, no), class = class(yes))
 }
 
-
-#' function to deal with NA logical values
+#' which elements are not in the intersection of two vectors?
 #' 
-#' @param x vector.
-#' @export
-is.true <- function(x) {!is.na(x) & x}
-
-
-#' Factor to numeric
-#'
-#' \code{fton} returns a numeric vector, converted from factor
-#'
-#' @usage fton(fctr)
-#' @param fctr factor that we want to convert to numeric
-#' @details
-#' Returns a pure numeric vector
-#' @return numeric vector
-#' @keywords fton
+#' @param v1 vector
+#' @param v2 vector of the same type as v1
+#' @return a vector of items that are not in the intersection of two sets
 #' @export
 #' @examples
-#' set.seed(1234)
-#' fctr <- factor(sample(1:4, 50, replace=TRUE), levels=1:4)
-#' fctr
-#' fton(fctr)
-fton <- function(fctr) {as.numeric(levels(fctr)[fctr])}
+#' v1 <- c(1, 3, 4, 5, 6, 7)
+#' v2 <- c(2, 4, 6, 8, 10)
+#' setdiff_all(v1, v2)
+#' # compare to setdiff
+#' setdiff(v1, v2)
+#' setdiff(v2, v1)
+setdiff_all <- function(v1, v2) {
+  setdiff(union(v1, v2), intersect(v1, v2))
+}
+
+
+
 
