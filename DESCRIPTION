@@ -1,11 +1,12 @@
 Package: btools
 Title: Boyd tools
-Version: 0.8
+Version: 0.9
 Authors@R: "Don Boyd <donboyd5@gmail.com> [aut, cre]"
-Description: General text and data management tools. Includes utilities for working with strings, and utilities for dplyr.
+Description: General text and data management tools. 
+    Includes utilities for working with strings, and utilities for dplyr.
 Depends: 
-    R (>= 3.1.0)
-License: GPL-2
+    R (>= 3.5.0)
+License: GPL-3
 LazyData: true
 Imports: 
     dplyr,
@@ -18,4 +19,4 @@ Imports:
     stats
 Suggests: bdata
 Encoding: UTF-8
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0

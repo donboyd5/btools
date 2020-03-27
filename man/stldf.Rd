@@ -24,7 +24,7 @@ Useful after dplyr's group_by, in do command, which requires data frame input. M
 \examples{
 library(bdata) # so that spop.q is available
 library(dplyr)
-spop.q \%>\% 
+spop.q \%>\%
     group_by(stabbr) \%>\%
     dplyr::arrange(date) \%>\% # BE SURE DATA HAVE BEEN SORTED BY DATE WITHIN GROUPING VARS!!!
     do(cbind(., stldf(.$value, 4)))

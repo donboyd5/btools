@@ -1,6 +1,4 @@
-# btools_dplyrtools.r
-# Don Boyd
-# 3/26/2019
+# btools_dplyrtools.r Don Boyd 3/26/2019
 
 # tools that generally are helpful with dplyr
 
@@ -20,8 +18,8 @@
 #' df <- data_frame(year=c(rep(1, 5), rep(2, 7)), x=c(seq(1, 2, length.out=11), NA))
 #' df
 #' df %>% group_by(year) %>% do(qtiledf(.$x, c(.1, .25, .5, .75, .9)))
-qtiledf <- function(vec, probs=c(0, .1, .25, .5, .75, .9, 1)) {
-  cbind(n = length(vec), n.notNA = sum(!is.na(vec)), as.data.frame(t(stats::quantile(vec, na.rm = TRUE, probs))))
+qtiledf <- function(vec, probs = c(0, 0.1, 0.25, 0.5, 0.75, 0.9, 1)) {
+    cbind(n = length(vec), n.notNA = sum(!is.na(vec)), as.data.frame(t(stats::quantile(vec, na.rm = TRUE, probs))))
 }
 
 
@@ -39,33 +37,33 @@ qtiledf <- function(vec, probs=c(0, .1, .25, .5, .75, .9, 1)) {
 #' @examples
 #' library(bdata) # so that spop.q is available
 #' library(dplyr)
-#' spop.q %>% 
+#' spop.q %>%
 #'     group_by(stabbr) %>%
 #'     dplyr::arrange(date) %>% # BE SURE DATA HAVE BEEN SORTED BY DATE WITHIN GROUPING VARS!!!
 #'     do(cbind(., stldf(.$value, 4)))
-stldf <- function(vec, freq) { # decompose time series; assume "date" var exists; has minor error handling
-  # arguments: numeric vector (vec) and its frequency (freq)
-  # return: data frame (tsr) with trend, seasonal, and remainder columns
-  
-  # a typical call would be:
-  # do(stldf(.$value, 12) but this will only return trend, seasonal, remainder
-  
-  # if other variables on the data frame are desired, incorporate them into the call via cbind, such as:
-  # do(cbind(., stldf(.$value, 12))), or
-  # do(cbind(.[, group_vars(.)], stldf(.$value, 12))) 
-  
-  lvec <- length(vec)
-  badout <- function(lvec) data.frame(trend = rep(NA, lvec), seasonal = rep(NA, lvec), remainder = rep(NA, lvec))
-  
-  if(lvec < 2 * freq) return(badout(lvec))
-  if (sum(is.na(vec)>0)) return(badout(lvec)) # djb new fix!!! 4/2/2018
-  
-  varts <- stats::ts(vec, start = 1, frequency = freq)
-  decomp <- stats::stl(varts, s.window = freq + 1, na.action = zoo::na.approx) # na.approx replaces missing values with interpolated values  
-  tsr <- data.frame(trend = as.vector(decomp$time.series[, "trend"]), 
-                    seasonal = as.vector(decomp$time.series[, "seasonal"]), 
-                    remainder = as.vector(decomp$time.series[, "remainder"]))
-  if (nrow(tsr) != lvec) return(badout(lvec))
+stldf <- function(vec, freq) {
+    # decompose time series; assume 'date' var exists; has minor error handling arguments: numeric vector (vec) and its frequency (freq) return: data frame (tsr) with
+    # trend, seasonal, and remainder columns
 
-  return(tsr)
+    # a typical call would be: do(stldf(.$value, 12) but this will only return trend, seasonal, remainder
+
+    # if other variables on the data frame are desired, incorporate them into the call via cbind, such as: do(cbind(., stldf(.$value, 12))), or do(cbind(.[,
+    # group_vars(.)], stldf(.$value, 12)))
+
+    lvec <- length(vec)
+    badout <- function(lvec) data.frame(trend = rep(NA, lvec), seasonal = rep(NA, lvec), remainder = rep(NA, lvec))
+
+    if (lvec < 2 * freq)
+        return(badout(lvec))
+    if (sum(is.na(vec) > 0))
+        return(badout(lvec))  # djb new fix!!! 4/2/2018
+
+    varts <- stats::ts(vec, start = 1, frequency = freq)
+    decomp <- stats::stl(varts, s.window = freq + 1, na.action = zoo::na.approx)  # na.approx replaces missing values with interpolated values  
+    tsr <- data.frame(trend = as.vector(decomp$time.series[, "trend"]), seasonal = as.vector(decomp$time.series[, "seasonal"]), remainder = as.vector(decomp$time.series[, 
+        "remainder"]))
+    if (nrow(tsr) != lvec) 
+        return(badout(lvec))
+    
+    return(tsr)
 }

@@ -18,7 +18,7 @@ Keeps letters so that scientific notation will be evaluated properly.
 Also look at \code{extract_numeric} in package stringr
 }
 \examples{
-char <- "$198,234.75"
+char <- '$198,234.75'
 cton(char)
 }
 \keyword{cton}

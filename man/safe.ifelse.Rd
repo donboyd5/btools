@@ -17,5 +17,5 @@ safe.ifelse(cond, yes, no)
 ifelse that can be used safely with dates
 }
 \examples{
-# snippet: mutate(date=safe.ifelse(freq=="A", as.Date(paste0(olddate, "-01-01")), date))
+# snippet: mutate(date=safe.ifelse(freq=='A', as.Date(paste0(olddate, '-01-01')), date))
 }

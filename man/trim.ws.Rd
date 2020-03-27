@@ -19,6 +19,6 @@ The trimmed string.
 All white space is removed from the ends.
 }
 \examples{
-trim.ws("   original string has leading and trailing spaces   ")
+trim.ws('   original string has leading and trailing spaces   ')
 }
 \keyword{trim.ws}
