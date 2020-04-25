@@ -14,7 +14,7 @@
 #' x <- as.Date(c('2010-01-03', '2011-03-03', '2011-04-07'))
 #' fdoq(x)
 fdoq <- function(date) {
-  as.Date(lubridate::floor_date(date, "quarter"))
+    as.Date(lubridate::floor_date(date, "quarter"))
 }
 
 
@@ -26,11 +26,11 @@ fdoq <- function(date) {
 #' @details You must ensure that the inputs are acceptable (e.g., the input data are dates). The function does not check.
 #' @keywords ldom
 #' @export
-#' @examples ldom(as.Date("2010-01-03"))
-#' x <- as.Date(c("2010-01-01", "2010-01-31","2019-02-01", "2020-02-01"))
+#' @examples ldom(as.Date('2010-01-03'))
+#' x <- as.Date(c('2010-01-01', '2010-01-31','2019-02-01', '2020-02-01'))
 #' ldom(x)
 ldom <- function(date) {
-  # get the first day of the NEXT month and subract 1 day
+    # get the first day of the NEXT month and subract 1 day
 }
 
 

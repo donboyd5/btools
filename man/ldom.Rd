@@ -16,8 +16,8 @@ ldom(date)
 You must ensure that the inputs are acceptable (e.g., the input data are dates). The function does not check.
 }
 \examples{
-ldom(as.Date("2010-01-03"))
-x <- as.Date(c("2010-01-01", "2010-01-31","2019-02-01", "2020-02-01"))
+ldom(as.Date('2010-01-03'))
+x <- as.Date(c('2010-01-01', '2010-01-31','2019-02-01', '2020-02-01'))
 ldom(x)
 }
 \keyword{ldom}

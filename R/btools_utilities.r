@@ -1,13 +1,10 @@
-# btools_utilities.r 
-# Don Boyd 3/27/2020
+# btools_utilities.r Don Boyd 3/27/2020
 
-# library(devtools)
-# library(btools)
+# library(devtools) library(btools)
 
-#  String manipulation functions ----
-# NOTE: These probably aren't needed anymore, as I use stringr for almost everything.
+# String manipulation functions ---- NOTE: These probably aren't needed anymore, as I use stringr for almost everything.
 
-#' @title Trim white space at either end of strings
+#' Trim white space at either end of strings
 #'
 #' @description \code{trim.ws} trims white space around strings
 #' @usage trim.ws(s)
@@ -23,8 +20,8 @@ trim.ws <- function(s) {
 }
 
 
-#  Numeric and date manipulation functions ----
-#' @title Convert character to numeric
+# Numeric and date manipulation functions ----
+#' Convert character to numeric
 #'
 #' @description \code{cton} converts character to numeric
 #' @usage cton(cvar)
@@ -42,7 +39,7 @@ cton <- function(cvar) {
 }
 
 
-#' @title Convert NA to zero
+#' Convert NA to zero
 #'
 #' @description \code{naz} converts NA to zero
 #' @usage naz(vec)
@@ -130,9 +127,8 @@ pany <- function(x, p, na.rm = FALSE) {
 }
 
 
-# Rolling mean and sum functions ----
-#   rollmean versions are fast but cannot handle NA input values
-#   rollapply version is slower but handles NAs, so use it
+# Rolling mean and sum functions ---- rollmean versions are fast but cannot handle NA input values rollapply version is slower but handles NAs, so use
+# it
 
 #' Get trailing moving average
 #'
@@ -181,8 +177,26 @@ sum4 <- function(x) {
 }
 
 
-
 # Miscellaneous functions ----
+
+#' Convenience 'not-in' operator
+#'
+#' Complement of the built-in operator \code{\%in\%}. Returns the elements of \code{x} that are not in \code{y}.
+#' @title \%nin\%
+#' @param x vector of items
+#' @param y vector of all values
+#' @return logical vecotor of items in x not in y
+#' @author Kieran Healy
+#' @rdname nin
+#' @examples
+#' fruit <- c("apples", "oranges", "banana")
+#' "apples" %nin% fruit
+#' "pears" %nin% fruit
+#' @export
+"%nin%" <- function(x, y) {
+    return( !(x %in% y) )
+}
+
 
 #' Factor to numeric
 #'

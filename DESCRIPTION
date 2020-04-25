@@ -10,13 +10,14 @@ License: GPL-3
 LazyData: true
 Imports: 
     dplyr,
+    forecast,
     lubridate,
     magrittr,
     precis,
     scales,
+    stats,
     tibble,
-    zoo,
-    stats
+    zoo
 Suggests: bdata
 Encoding: UTF-8
 RoxygenNote: 7.1.0
