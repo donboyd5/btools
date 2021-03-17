@@ -13,11 +13,10 @@ Imports:
     forecast,
     lubridate,
     magrittr,
-    precis,
     scales,
     stats,
     tibble,
     zoo
 Suggests: bdata
 Encoding: UTF-8
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
