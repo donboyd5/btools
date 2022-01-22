@@ -2,7 +2,7 @@
 % Please edit documentation in R/btools_dplyrtools.r
 \name{qtiledf}
 \alias{qtiledf}
-\title{Get quantiles and number of not-NA observations for a vector, return as data frame}
+\title{Get quantiles and number of not-NA observations for a vector, return as tibble}
 \usage{
 qtiledf(vec, probs)
 }
@@ -23,8 +23,10 @@ Useful after dplyr's group_by, in do command, which requires data frame input.
 }
 \examples{
 library(dplyr)
-df <- data_frame(year=c(rep(1, 5), rep(2, 7)), x=c(seq(1, 2, length.out=11), NA))
+df <- tibble(year=c(rep(1, 5), rep(2, 7)), x=c(seq(1, 2, length.out=11), NA))
 df
-df \%>\% group_by(year) \%>\% do(qtiledf(.$x, c(.1, .25, .5, .75, .9)))
+df \%>\%
+  group_by(year) \%>\%
+  summarise(qtiledf(.$x, c(.1, .25, .5, .75, .9)))
 }
 \keyword{qtiledf}

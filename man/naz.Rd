@@ -7,7 +7,7 @@
 naz(vec)
 }
 \arguments{
-\item{vec}{The vector to convert}
+\item{vec}{The vector to convert.}
 }
 \value{
 The revised vector.

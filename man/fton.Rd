@@ -13,7 +13,7 @@ fton(fctr)
 numeric vector
 }
 \description{
-\code{fton} returns a numeric vector, converted from factor
+Returns a numeric vector, converted from factor.
 }
 \details{
 Returns a pure numeric vector

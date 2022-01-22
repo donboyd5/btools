@@ -1,6 +1,6 @@
 Package: btools
 Title: Boyd tools
-Version: 0.9
+Version: 0.9.1
 Authors@R: "Don Boyd <donboyd5@gmail.com> [aut, cre]"
 Description: General text and data management tools. 
     Includes utilities for working with strings, and utilities for dplyr.
@@ -13,10 +13,12 @@ Imports:
     forecast,
     lubridate,
     magrittr,
+    purrr,
     scales,
     stats,
+    stringr,
     tibble,
     zoo
 Suggests: bdata
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

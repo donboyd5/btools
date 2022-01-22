@@ -1,8 +1,10 @@
-# btools_dplyrtools.r Don Boyd 3/26/2019
+# btools_dplyrtools.r
+# Don Boyd 1/22/2022
 
 # tools that generally are helpful with dplyr
 
-#' @title Get quantiles and number of not-NA observations for a vector, return as data frame
+#' Get quantiles and number of not-NA observations for a vector, return as tibble
+#' @export qtiledf
 #'
 #' @description \code{qtiledf} get quantiles and number of not-NA observations for a vector, return as data frame
 #' @usage qtiledf(vec, probs)
@@ -12,18 +14,24 @@
 #' Useful after dplyr's group_by, in do command, which requires data frame input.
 #' @return Data frame with columns as quantiles
 #' @keywords qtiledf
-#' @export
 #' @examples
 #' library(dplyr)
-#' df <- data_frame(year=c(rep(1, 5), rep(2, 7)), x=c(seq(1, 2, length.out=11), NA))
+#' df <- tibble(year=c(rep(1, 5), rep(2, 7)), x=c(seq(1, 2, length.out=11), NA))
 #' df
-#' df %>% group_by(year) %>% do(qtiledf(.$x, c(.1, .25, .5, .75, .9)))
-qtiledf <- function(vec, probs = c(0, 0.1, 0.25, 0.5, 0.75, 0.9, 1)) {
-    cbind(n = length(vec), n.notNA = sum(!is.na(vec)), as.data.frame(t(stats::quantile(vec, na.rm = TRUE, probs))))
+#' df %>%
+#'   group_by(year) %>%
+#'   summarise(qtiledf(.$x, c(.1, .25, .5, .75, .9)))
+qtiledf <- function(vec,
+                    probs = c(0, 0.1, 0.25, 0.5, 0.75, 0.9, 1)) {
+    # cbind(n = length(vec), n.notNA = sum(!is.na(vec)), as.data.frame(t(stats::quantile(vec, na.rm = TRUE, probs))))
+  cbind(n = length(vec),
+        n.notNA = sum(!is.na(vec)),
+        tibble::as_tibble(t(stats::quantile(vec, na.rm = TRUE, probs))))
 }
 
 
-#' @title Get trend, seasonal, remainder for a vector that has time-series data
+#' Get trend, seasonal, remainder for a vector that has time-series data
+#' @export stldf
 #'
 #' @description \code{stldf} get trend, seasonal, remainder for a vector that has time-series data
 #' @usage stldf(vec, freq)
@@ -33,7 +41,6 @@ qtiledf <- function(vec, probs = c(0, 0.1, 0.25, 0.5, 0.75, 0.9, 1)) {
 #' Useful after dplyr's group_by, in do command, which requires data frame input. Make sure data are sorted by time before using.
 #' @return Data frame with 3 columns: trend, seasonal, remainder
 #' @keywords stldf
-#' @export
 #' @examples
 #' library(bdata) # so that spop.q is available
 #' library(dplyr)

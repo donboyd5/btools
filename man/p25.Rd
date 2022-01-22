@@ -2,7 +2,7 @@
 % Please edit documentation in R/btools_utilities.r
 \name{p25}
 \alias{p25}
-\title{Compute the sample 25th percentile.}
+\title{Compute the sample 25th percentile}
 \usage{
 p25(x, na.rm = FALSE)
 }
@@ -15,7 +15,7 @@ p25(x, na.rm = FALSE)
 numeric
 }
 \description{
-Compute the sample 25th percentile.
+Compute the sample 25th percentile
 }
 \examples{
 p25(1:100)

@@ -14,7 +14,7 @@ sa(value, freq, s.window=9)
 \item{s.window}{Window parameter that is passed to stats::stl default=9}
 }
 \description{
-\code{sa} Get seasonally adjusted values for a vector.
+Get seasonally adjusted values for a vector
 }
 \details{
 Seasonally adjusted version of value

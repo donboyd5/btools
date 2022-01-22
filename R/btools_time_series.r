@@ -2,8 +2,10 @@
 # it
 
 #' Get seasonally adjusted values for a vector
-#'
-#' \code{sa} Get seasonally adjusted values for a vector.
+#' 
+#' @export sa
+#'  
+# Get seasonally adjusted values for a vector.
 #' 
 #' @usage sa(value, freq, s.window=9)
 #' @param value The vector to operate on.
@@ -11,7 +13,6 @@
 #' @param s.window Window parameter that is passed to stats::stl default=9
 #' @details Seasonally adjusted version of value
 #' @keywords sa
-#' @export
 #' @examples
 #' set.seed(1234)
 #' n <- 28
