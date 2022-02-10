@@ -3,6 +3,7 @@
 # Now that I use lubridate, very few date functions are necessary
 
 #' First day of quarter
+#' 
 #' @export fdoq
 #'
 #' @description \code{fdoq} create a date for start of quarter, from quarter, year
@@ -19,6 +20,7 @@ fdoq <- function(date) {
 
 
 #' Last day of month
+#' 
 #' @export ldom
 #'
 #' @description \code{ldom} get the last day of month, for a given date
@@ -35,6 +37,7 @@ ldom <- function(date) {
 
 
 #' Create a date from month, day, year
+#' 
 #' @export mdy_fn
 #'
 #' @description \code{mdy_fn} create a date from month, day, year
@@ -51,6 +54,7 @@ mdy_fn <- function(m, d, y) {
 
 
 #' Create a date for start of quarter, from quarter, year
+#' 
 #' @export qy
 #'
 #' @description \code{qy} create a date for start of quarter, from quarter, year

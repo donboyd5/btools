@@ -1,5 +1,7 @@
-# Rolling mean and sum functions ---- rollmean versions are fast but cannot handle NA input values rollapply version is slower but handles NAs, so use
-# it
+# Rolling mean and sum functions ---- rollmean versions are fast but cannot
+# handle NA input values rollapply version is slower but handles NAs, so use it
+
+# investigate slider package which may make this unnecessary (2/10/2022)
 
 #' Get seasonally adjusted values for a vector
 #' 

@@ -6,71 +6,6 @@
 
 # NOTE: put @export as first tag, NOT earlier.
 
-# String manipulation functions ----
-
-#' Detect whether any vector elements are in a string
-#' 
-#' @export str_detect_any
-#' @param s A string.
-#' @param elements Vector elements to look for.
-#' @return Logical indicating whether any of \code{elements} are found in \code{s}.
-#' @examples
-#' str_detect_any("abc defg ijk", c("123", "def", "11"))
-#' str_detect_any("abc defg ijk", c("123", "xyz", "11"))
-str_detect_any <- function(s, elements){
-  # check whether each item in the string vector s
-  # has at least one item in the string vector elements
-  
-  # get a list: one "row" per item in s
-  #   each row is a logical vector with same length as elements
-  logical_list <- purrr::map(s, stringr::str_detect, elements)
-  
-  # are any of the items in each "row" of the list true?
-  purrr::map_lgl(logical_list, any)
-  
-  # test with the following code:
-  # s <- c("str one", "str two", "str 3", "str 4", "my 8")
-  # elements <- c("one", "3", "str", "7")
-  # 
-  # str_detect_any(s, elements)
-}
-
-#' Return portion of a string before first occurrence of a pattern
-#' 
-#' @export str_extract_before_first
-#' @param s A string.
-#' @param first Pattern to look for.
-#' @return Substring of \code{s} before first occurrence of \code{first}.
-#' @examples
-#' str_extract_before_first("abcde#yzy", "#")
-#' str_extract_before_first("abcde#yzy", "y")
-str_extract_before_first <- function(s, first){
-  # stringr::str_extract("abc!def", '^[^!]+')  # everything before first !
-  pattern <- paste0("^[^", first, "]+")
-  stringr::str_extract(s, pattern)
-}
-
-#' Return portion of a string after last occurrence of a pattern
-#'
-#' @export str_extract_after_last
-#' @param s A string.
-#' @param last Pattern to look for.
-#' @return Substring of \code{s} after last occurrence of \code{last}.
-#' @examples
-#' str_extract_after_last("ab#cde#yzy", "#")
-#' str_extract_after_last("abcde#yzy", "c")
-str_extract_after_last <- function(s, last){
-  # stringr::str_extract("abc!def", '[^!]+$')  # everything after last !
-  pattern <- paste0("[^", last, "]+$")
-  stringr::str_extract(s, pattern)
-}
-
-
-#..regex notes ----
-# str_extract(ulabel, '![^!]+$'),  # everything after last !
-# str_extract(ulabel, '^[^!]+'),  # everything before first !
-#  "^[^,]+"  # everything before first ,
-# x <- c("abc, def", "hijklm ,zyz")  str_extract(x, "^[^,]+")
 
 
 # numeric functions -------------------------------------------------------
@@ -105,116 +40,6 @@ xldate <- function(xldate) {
     return(date)
 }
 
-
-# Statistical functions ----
-#' Compute the sample 25th percentile
-#' 
-#' @export p25
-#' @param x a numeric vector containing the values whose 25th percentile is to be computed.
-#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
-#' @return numeric
-#' @examples
-#' p25(1:100)
-#' p25(c(1:10, NA, 11:100), na.rm=TRUE)
-p25 <- function(x, na.rm = FALSE) {
-    as.numeric(stats::quantile(x, 0.25, na.rm = na.rm))
-}
-
-
-#' Compute the sample 50th percentile (median).
-#' 
-#' @export p50
-#' @param x a numeric vector containing the values whose 50th percentile is to be computed.
-#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
-#' @return numeric
-#' @examples
-#' p50(1:100)
-#' p50(c(1:10, NA, 11:100), na.rm=TRUE)
-p50 <- function(x, na.rm = FALSE) {
-    as.numeric(stats::quantile(x, 0.5, na.rm = na.rm))
-}
-
-
-#' Compute the sample 75th percentile.
-#' 
-#' @export p75
-#' @param x a numeric vector containing the values whose 75th percentile is to be computed.
-#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
-#' @return numeric
-#' @examples
-#' p75(1:100)
-#' p75(c(1:10, NA, 11:100), na.rm=TRUE)
-p75 <- function(x, na.rm = FALSE) {
-    as.numeric(stats::quantile(x, 0.75, na.rm = na.rm))
-}
-
-
-#' Compute the sample value for a specific percentile, p.
-#' @export pany
-#' 
-#' @param x a numeric vector containing the values whose p-th percentile is to be computed.
-#' @param p the percentile.
-#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
-#' @return numeric
-#' @examples
-#' pany(1:100, .33)
-#' pany(c(1:10, NA, 11:100), .33, na.rm=TRUE)
-pany <- function(x, p, na.rm = FALSE) {
-    as.numeric(stats::quantile(x, p, na.rm = na.rm))
-}
-
-
-# Rolling mean and sum functions ---- rollmean versions are fast but cannot handle NA input values rollapply version is slower but handles NAs, so use
-# it
-
-#' Get trailing moving average
-#'
-#' \code{ma} Get trailing moving average
-#' 
-#' @export ma
-#' @usage ma(x, n)
-#' @param x The vector to operate on.
-#' @param n The period of the moving average.
-#' @details Moving average of the vector x.
-#' @keywords ma
-#' @examples
-#' ma(7:21, 3)
-ma <- function(x, n) {
-    zoo::rollapply(x, n, function(x) mean(x, na.rm = TRUE), fill = NA, align = "right")
-}
-
-
-#' Get 4-period moving average (3 lags + current)
-#'
-#' \code{ma4} get 4-period moving average
-#' 
-#' @export ma4
-#' @usage ma4(x)
-#' @param x The vector to operate on.
-#' @details 4-period moving average
-#' @keywords ma4
-#' @examples
-#' ma4(7:21)
-ma4 <- function(x) {
-    # note that this requires zoo, which is on the Depends line in the Description file
-    zoo::rollapply(x, 4, function(x) mean(x, na.rm = TRUE), fill = NA, align = "right")
-}
-
-
-#' Get 4-period moving sum (3 lags + current)
-#'
-#' \code{sum4} get 4-period moving sum
-#' 
-#' @export
-#' @usage sum4(x)
-#' @param x The vector to operate on.
-#' @details 4-period moving sum
-#' @keywords sum4
-#' @examples
-#' sum4(7:21)
-sum4 <- function(x) {
-    ma4(x) * 4
-}
 
 
 # Miscellaneous functions ----
@@ -256,6 +81,48 @@ ht <- function(df, nrecs = 6) {
     print(utils::head(df, nrecs))
     print(utils::tail(df, nrecs))
 }
+
+
+#' which elements of a vector are even
+#' 
+#' @export is.even
+#' 
+#' @param x vector.
+#' @return logical vector
+#' @examples
+#' is.even(1:10)
+is.even <- function(x) {(x %% 2) == 0}
+
+#' return even elements of a vector
+#' 
+#' @export even
+#' 
+#' @param x vector
+#' @return numeric vector
+#' @examples
+#' even(1:10)
+even <- function(x) {x[is.even(x)]}
+
+
+#' which elements of a vector are odd
+#' 
+#' @export is.odd
+#' 
+#' @param x vector
+#' @return logical vector
+#' @examples
+#' is.odd(1:10)
+is.odd <- function(x) {!is.even(x)}
+
+#' return odd elements of a vector
+#' 
+#' @export odd
+#' 
+#' @param x vector
+#' @return numeric vector
+#' @examples
+#' odd(1:10)
+odd <- function(x) {x[is.odd(x)]}
 
 
 #' function to deal with NA logical values
@@ -319,6 +186,7 @@ ns <- function(df) {
     names(df) %>% sort
 }
 
+# safe.ifelse may no longer be needed if using tidyr safely
 
 #' ifelse that can be used safely with dates
 #' 
@@ -337,6 +205,7 @@ safe.ifelse <- function(cond, yes, no) {
 #' which elements are not in the intersection of two vectors?
 #' 
 #' @export
+#' 
 #' @param v1 vector
 #' @param v2 vector of the same type as v1
 #' @return a vector of items that are not in the intersection of two sets
