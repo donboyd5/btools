@@ -3,6 +3,8 @@
 
 # investigate slider package which may make this unnecessary (2/10/2022)
 
+# note that some of the functions may work with vectors rather than time series
+
 #' Get seasonally adjusted values for a vector
 #' 
 #' @export sa
@@ -27,3 +29,6 @@ sa <- function(value, freq, s.window = 9) {
     vts <- forecast::seasadj(stats::stl(vts, s.window = s.window))
     as.numeric(vts)
 }
+
+
+

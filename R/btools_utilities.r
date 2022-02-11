@@ -6,7 +6,7 @@
 
 # NOTE: put @export as first tag, NOT earlier.
 
-
+# usethis::use_pipe(export = TRUE)
 
 # numeric functions -------------------------------------------------------
 

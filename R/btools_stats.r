@@ -1,4 +1,39 @@
-# Statistical functions ----
+
+# simple differences ----
+#' Compute year-over-year percent change for annual data
+#' 
+#' @export pchya
+#' 
+#' @param value numeric vector
+#' @param year integer or numeric vector
+#' @return numeric vector
+#' @examples
+#' set.seed(1234)
+#' year <- 1970:1990
+#' value <- 100 * (1 + .05 + rnorm(length(year), 0, .002))
+#' cbind(year, value, pchya(value, year))
+pchya <- function(value, year){
+  value / value[match(year - 1, year)] -1
+}
+
+#' Compute year-over-year difference for annual data
+#' 
+#' @export diffya
+#' 
+#' @param value numeric vector
+#' @param year integer or numeric vector
+#' @return numeric vector
+#' @examples
+#' set.seed(1234)
+#' year <- 1970:1990
+#' value <- 100 * (1 + .05 + rnorm(length(year), 0, .002))
+#' cbind(year, value, diffya(value, year))
+diffya <- function(value, year){
+  value - value[match(year - 1, year)]
+}
+
+
+# quantiles ----
 #' Compute the sample 25th percentile
 #' 
 #' @export p25
@@ -58,8 +93,12 @@ pany <- function(x, p, na.rm = FALSE) {
 }
 
 
+# window functions -- moving averages, sums, etc. ----
 # Rolling mean and sum functions ---- rollmean versions are fast but cannot handle NA input values rollapply version is slower but handles NAs, so use
 # it
+
+# look at slide package as alternative
+
 
 #' Get trailing moving average
 #'
@@ -111,6 +150,84 @@ sum4 <- function(x) {
 }
 
 
+#' Rolling mean
+#'
+#' \code{rollmean} rolling sample standard deviation
+#' 
+#' @export
+#' @usage rollmean(x, nobs)
+#' @param x The vector to operate on
+#' @param nobs Number of observations to include in window, including current
+#' @details rolling mean
+#' @keywords rollmean
+#' @examples
+#' rollmean(1:100, 4)
+rollmean <- function(x, nobs) {
+  zoo::rollapply(x, nobs, function(x) mean(x, na.rm=TRUE), fill=NA, align="right")
+}
+
+
+#' Rolling minimum
+#'
+#' \code{rollmin} rolling minimum
+#' 
+#' @export
+#' @usage rollmin(x, nobs)
+#' @param x The vector to operate on
+#' @param nobs Number of observations to include in window, including current
+#' @details rolling minimum
+#' @keywords rollmin
+#' @examples
+#' rollmean(1:100, 4)
+rollmin <- function(x, nobs) {
+  zoo::rollapply(x, nobs, function(x) min(x, na.rm=TRUE), fill=NA, align="right")
+}
+
+
+#' Rolling sample standard deviation
+#'
+#' \code{rollsd} rolling sample standard deviation
+#' 
+#' @export
+#' @usage rollsd(x, nobs)
+#' @param x The vector to operate on
+#' @param nobs Number of observations to include in window, including current
+#' @details rolling sample standard deviation
+#' @examples
+#' rollsd(1:100, 4)
+rollsd <- function(x, nobs) {
+  # note that this is sample standard deviation
+  zoo::rollapply(x, nobs, function(x) stats::sd(x, na.rm=TRUE), fill=NA, align="right")
+}
+
+
+#' Rolling populatoin standard deviation
+#'
+#' \code{rollsd_p} rolling population standard deviation
+#' 
+#' @export
+#' @usage rollsd_p(x, nobs)
+#' @param x The vector to operate on
+#' @param nobs Number of observations to include in window, including current
+#' @details rolling population standard deviation
+#' @keywords rollsd_p
+#' @examples
+#' rollsd_p(1:100, 4)
+rollsd_p <- function(x, nobs) {
+  # population standard deviation
+  sdp <- function(x){
+    n <- sum(!is.na(x))
+    stats::sd(x, na.rm=TRUE) * sqrt((n - 1) / n)
+  }
+  zoo::rollapply(x, nobs, function(x) sdp(x),
+                 fill=NA, align="right")
+}
+
+
+
+
+# stats across columns of a data frame or set of vectors ----
+
 #' Vectorized mean, similiar to \code{pmin} and \code{pmax}
 #'
 #' @export
@@ -143,4 +260,8 @@ psum <- function(..., na.rm = FALSE) {
   res[idx_na] <- NA
   return(res)
 }
+
+
+# model-related functions ----
+# se <- function(model) {sqrt(diag(vcov(model)))} # we don't need this now
 
