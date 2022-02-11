@@ -7,17 +7,12 @@
 ldom(date)
 }
 \arguments{
-\item{date}{a vector of dates. No default.}
+\item{date}{a vector of dates as strings or dates. No default.}
 }
 \description{
 \code{ldom} get the last day of month, for a given date
 }
-\details{
-You must ensure that the inputs are acceptable (e.g., the input data are dates). The function does not check.
-}
 \examples{
-ldom(as.Date('2010-01-03'))
-x <- as.Date(c('2010-01-01', '2010-01-31','2019-02-01', '2020-02-01'))
+x <- c('2010-01-01', '2010-01-31','2019-02-01', '2020-02-01')
 ldom(x)
 }
-\keyword{ldom}
