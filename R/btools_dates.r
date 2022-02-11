@@ -1,21 +1,21 @@
-# btools_dates.r Don Boyd 1/22/2022
+# btools_dates.r 
+# Don Boyd 2/11/2022
 
 # Now that I use lubridate, very few date functions are necessary
 
-#' First day of quarter
+#' First day of quarter, given a date as string or date
 #' 
 #' @export fdoq
 #'
 #' @description \code{fdoq} create a date for start of quarter, from quarter, year
 #' @usage fdoq(date)
-#' @param date a vector of dates. No default.
-#' @details You must ensure that the inputs are acceptable (e.g., the input data are dates). The function does not check.
-#' @keywords fdoq
-#' @examples fdoq(as.Date('2010-01-03'))
-#' x <- as.Date(c('2010-01-03', '2011-03-03', '2011-04-07'))
+#' @param date a vector of dates as strings or dates. No default.
+#' @examples 
+#' x <- c('2010-01-03', '2011-03-03', '2011-04-07')
 #' fdoq(x)
 fdoq <- function(date) {
-    as.Date(lubridate::floor_date(date, "quarter"))
+  date <- as.Date(date)
+  as.Date(lubridate::floor_date(date, "quarter"))
 }
 
 
@@ -36,34 +36,20 @@ ldom <- function(date) {
 }
 
 
-#' Create a date from month, day, year
+#' First day of quarter, from year, quarter
 #' 
-#' @export mdy_fn
+#' @export yq2
 #'
-#' @description \code{mdy_fn} create a date from month, day, year
-#' @usage mdy_fn(m, d, y)
-#' @param m the month input. No default.
-#' @param d the day input. No default.
+#' @description \code{yq2} first day quarter, with separate year, quarter inputs
+#' @usage yq2(y, q)
 #' @param y the year input. No default.
-#' @details You must ensure that the inputs are acceptable (e.g., month is in 1:12). The function does not check.
-#' @keywords mdy_fn
-#' @examples mdy_fn(10, 1, 1988)
-mdy_fn <- function(m, d, y) {
-    as.Date(ISOdate(y, m, d))
-}
-
-
-#' Create a date for start of quarter, from quarter, year
-#' 
-#' @export qy
-#'
-#' @description \code{qy} create a date for start of quarter, from quarter, year
-#' @usage qy(q, y)
 #' @param q the quarter input. No default.
-#' @param y the year input. No default.
-#' @details You must ensure that the inputs are acceptable (e.g., quarter is in 1:4). The function does not check.
-#' @keywords qy
-#' @examples qy(2, 1985)
-qy <- function(q, y) {
-    mdy_fn(q * 3 - 2, 1, y)
+#' @examples
+#' yq2(2020, 1)
+#' yq2("2020", "1")
+yq2 <- function(y, q) {
+  # lubridate
+  s <- paste0(y, ".", q)
+  lubridate::yq(s)
+  # mdy_fn(q * 3 - 2, 1, y)  # no longer needed
 }

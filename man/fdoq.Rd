@@ -2,22 +2,17 @@
 % Please edit documentation in R/btools_dates.r
 \name{fdoq}
 \alias{fdoq}
-\title{First day of quarter}
+\title{First day of quarter, given a date as string or date}
 \usage{
 fdoq(date)
 }
 \arguments{
-\item{date}{a vector of dates. No default.}
+\item{date}{a vector of dates as strings or dates. No default.}
 }
 \description{
 \code{fdoq} create a date for start of quarter, from quarter, year
 }
-\details{
-You must ensure that the inputs are acceptable (e.g., the input data are dates). The function does not check.
-}
 \examples{
-fdoq(as.Date('2010-01-03'))
-x <- as.Date(c('2010-01-03', '2011-03-03', '2011-04-07'))
+x <- c('2010-01-03', '2011-03-03', '2011-04-07')
 fdoq(x)
 }
-\keyword{fdoq}
