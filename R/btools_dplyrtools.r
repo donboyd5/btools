@@ -1,7 +1,30 @@
 # btools_dplyrtools.r
-# Don Boyd 1/22/2022
+# Don Boyd 4/4/2022
 
 # tools that generally are helpful with dplyr
+
+
+#' Convert names of a data frame to lower case
+#'
+#' Convert names of a data frame to lower case, return as data frame. This works
+#' with the pipe operator introduced in R 4.1.
+#'
+#' @export lcnames
+#' @usage lcnames(df)
+#' @param df Data frame.
+#' @return Data frame with lower-case names
+#' @keywords lcnames
+#' @examples
+#' library(dplyr)
+#' df <- tibble(YEAR=2000:2010, X=10:20, y=30:40)
+#' df
+#' df |>
+#'   lcnames()
+lcnames <- function(df) {
+  vnames <- stringr::str_to_lower(names(df))
+  stats::setNames(df, vnames)
+}
+
 
 #' Get quantiles and number of not-NA observations for a vector, return as tibble
 #' @export qtiledf
