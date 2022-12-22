@@ -15,6 +15,10 @@ knitr::opts_chunk$set(
 
 # btools
 
+<!-- badges: start -->
+<!-- badges: end -->
+
+
 Tools I use frequently.
 
 Has functions in these categories:
@@ -22,6 +26,8 @@ Has functions in these categories:
 -   dates
 
 -   dplyr
+
+-   formatting numbers
 
 -   states
 
@@ -32,3 +38,16 @@ Has functions in these categories:
 -   time series
 
 -   general utilities
+
+## Installation
+
+You can install the development version of btools from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("donboyd5/btools")
+```
+
+## Example
+
+TO COME
