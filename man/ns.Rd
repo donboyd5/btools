@@ -2,18 +2,18 @@
 % Please edit documentation in R/btools_utilities.r
 \name{ns}
 \alias{ns}
-\title{create vector of sorted names of a data frame}
+\title{create vector of sorted names of an object}
 \usage{
-ns(df)
+ns(obj)
 }
 \arguments{
-\item{df}{Data frame}
+\item{obj}{named object}
 }
 \value{
 a vector of sorted names
 }
 \description{
-create vector of sorted names of a data frame
+create vector of sorted names of an object
 }
 \examples{
 names(iris) # unsorted

@@ -20,7 +20,7 @@ Returns a pure numeric vector
 }
 \examples{
 set.seed(1234)
-fctr <- factor(sample(1:4, 50, replace=TRUE), levels=1:4)
+fctr <- factor(sample(1:4, 50, replace = TRUE), levels = 1:4)
 fctr
 fton(fctr)
 }

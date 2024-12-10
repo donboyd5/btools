@@ -15,7 +15,8 @@ ht(df, nrecs=6)
 \code{ht} head and tail of a vector, matrix, table, data frame or function
 }
 \details{
-show head and tail of a vector, matrix, table, data frame or function
+show head and tail of a vector, matrix, table, data frame
+ or function
 }
 \examples{
 ht(mtcars, 4)
